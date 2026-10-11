@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TravelMate - Smart Trip Planner, Itinerary & Safety Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-[#1E293B] min-h-screen flex flex-col">
+
+    <!-- Top Navigation -->
+    <nav class="bg-white border-b border-slate-100 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2.5 cursor-pointer" onclick="showSection('home')">
+                <div class="bg-[#0D7377] text-white p-2 rounded-xl flex items-center justify-center shadow-md">
+                    <i class="fa-solid fa-sparkles text-sm"></i>
+                </div>
+                <span class="text-xl font-extrabold tracking-tight text-[#0F172A]">TravelMate</span>
+            </div>
+            <div class="flex items-center space-x-3">
+                <button onclick="showSection('memories')" class="bg-slate-100 hover:bg-slate-200 text-[#0F172A] px-4 py-2 rounded-xl font-semibold text-sm transition flex items-center gap-1.5">
+                    <i class="fa-regular fa-heart text-[#0D7377]"></i> My Trips
+                </button>
+                <button onclick="showSection('home')" class="bg-[#0D7377] hover:bg-[#09575A] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm transition flex items-center gap-1.5">
+                    Plan a trip <i class="fa-solid fa-arrow-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 space-y-8">
+
+        <!-- HOME / PLANNER SECTION -->
+        <section id="home-section" class="space-y-8">
+            
+            <!-- Hero Banner -->
+            <div class="relative rounded-3xl overflow-hidden shadow-xl text-white p-6 sm:p-12 flex flex-col justify-between min-h-[520px]" style="background: linear-gradient(180deg, rgba(13, 115, 119, 0.88) 0%, rgba(15, 23, 42, 0.92) 100%), url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') center/cover;">
+                
+                <div class="space-y-4 max-w-2xl z-10">
+                    <div class="inline-flex items-center gap-1.5 bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold tracking-wide text-emerald-100 border border-white/20">
+                        <i class="fa-solid fa-sparkles text-[10px]"></i> ULTIMATE SMART TRAVEL COMPANION & SAFETY HUB
+                    </div>
+                    <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight leading-tight">
+                        Go places.<br><span class="text-emerald-300">Feel more.</span>
+                    </h1>
+                    <p class="text-slate-200 text-sm sm:text-base leading-relaxed">
+                        Customize trip duration, explore Wikipedia attractions & food galleries, look up Google Maps & Airbnb stays, and access instant emergency helplines.
+                    </p>
+                </div>
+
+                <!-- Floating Search Box -->
+                <div class="bg-white rounded-2xl p-4 sm:p-6 shadow-2xl z-10 mt-6 text-slate-800 space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+                        <!-- Origin -->
+                        <div class="flex items-center bg-slate-50 px-3.5 py-3 rounded-xl border border-slate-200 focus-within:border-[#0D7377]">
+                            <i class="fa-solid fa-location-crosshairs text-[#0D7377] mr-2.5"></i>
+                            <input type="text" id="originInput" placeholder="From (e.g. Delhi, Hyderabad)" class="bg-transparent w-full text-sm font-medium focus:outline-none text-slate-800 placeholder:text-slate-400">
+                        </div>
+                        <!-- Destination -->
+                        <div class="flex items-center bg-slate-50 px-3.5 py-3 rounded-xl border border-slate-200 focus-within:border-[#0D7377]">
+                            <i class="fa-solid fa-location-dot text-rose-500 mr-2.5"></i>
+                            <input type="text" id="destInput" placeholder="To (e.g. Goa, Paris, Tokyo)" class="bg-transparent w-full text-sm font-medium focus:outline-none text-slate-800 placeholder:text-slate-400">
+                        </div>
+                        <!-- Trip Duration (Days / Nights) -->
+                        <div class="flex items-center bg-slate-50 px-3.5 py-3 rounded-xl border border-slate-200">
+                            <i class="fa-regular fa-calendar-days text-[#0D7377] mr-2.5"></i>
+                            <select id="durationDays" class="bg-transparent w-full text-sm font-bold focus:outline-none text-slate-800">
+                                <option value="2">2 Days / 1 Night</option>
+                                <option value="3" selected>3 Days / 2 Nights</option>
+                                <option value="4">4 Days / 3 Nights</option>
+                                <option value="5">5 Days / 4 Nights</option>
+                                <option value="7">7 Days / 6 Nights</option>
+                            </select>
+                        </div>
+                        <!-- Travelers Count -->
+                        <div class="flex items-center bg-slate-50 px-3.5 py-3 rounded-xl border border-slate-200">
+                            <i class="fa-solid fa-users text-[#0D7377] mr-2.5"></i>
+                            <select id="travelersCount" class="bg-transparent w-full text-sm font-bold focus:outline-none text-slate-800">
+                                <option value="1">1 Traveler (Solo)</option>
+                                <option value="2" selected>2 Travelers</option>
+                                <option value="3">3 Travelers</option>
+                                <option value="4">4 Group / Family</option>
+                                <option value="5">5+ Large Group</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 items-center">
+                        <!-- Custom Budget Input -->
+                        <div class="flex items-center bg-slate-50 px-3.5 py-3 rounded-xl border border-slate-200">
+                            <span class="text-slate-400 font-bold mr-2">₹</span>
+                            <input type="number" id="customBudgetInput" placeholder="Your Target Budget (e.g. 30000)" class="bg-transparent w-full text-sm font-bold focus:outline-none text-slate-800 placeholder:text-slate-400">
+                        </div>
+                        <!-- Cost Filter -->
+                        <div>
+                            <select id="costFilter" class="bg-slate-50 text-slate-700 text-xs font-bold px-3 py-3.5 rounded-xl border border-slate-200 focus:outline-none w-full">
+                                <option value="all">All Budgets & Stays</option>
+                                <option value="budget">Budget-Friendly</option>
+                                <option value="mid">Mid-Range</option>
+                                <option value="luxury">Luxury Stays</option>
+                            </select>
+                        </div>
+                        <!-- Explore Button -->
+                        <div>
+                            <button onclick="handleSearch()" class="w-full bg-[#0D7377] hover:bg-[#09575A] text-white font-bold py-3.5 px-6 rounded-xl transition shadow-md flex items-center justify-center gap-2 text-sm">
+                                Explore & Calculate <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="pt-1 flex flex-wrap items-center justify-between text-xs text-slate-500 font-medium gap-2">
+                        <span><i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Emergency Helplines & Safety Hub Included</span>
+                        <span class="text-[#0D7377] font-bold">WhatsApp Share Ready 📱</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Dashboard (Hidden initially) -->
+            <div id="resultsContainer" class="hidden space-y-8 pt-4">
+                
+                <!-- Route & Duration Stats Bar -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm text-center">
+                        <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">Duration</p>
+                        <p id="statDuration" class="text-xl font-extrabold text-[#0D7377] mt-1">3 Days / 2 Nights</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm text-center">
+                        <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">Distance</p>
+                        <p id="statDistance" class="text-xl font-extrabold text-slate-800 mt-1">0 km</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm text-center">
+                        <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">Flight Total Est.</p>
+                        <p id="statFlightCost" class="text-xl font-extrabold text-emerald-600 mt-1">₹0</p>
+                    </div>
+                    <div id="trainStatCard" class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm text-center">
+                        <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">Train Total Est.</p>
+                        <p id="statTrainCost" class="text-xl font-extrabold text-amber-600 mt-1">₹0</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl border border-slate-100 shadow-sm text-center">
+                        <p class="text-xs text-slate-400 uppercase font-bold tracking-wider">Custom Budget</p>
+                        <p id="statBudgetCheck" class="text-sm font-extrabold text-purple-600 mt-2">Not Set</p>
+                    </div>
+                </div>
+
+                <!-- WhatsApp Share Banner -->
+                <div class="bg-emerald-600 text-white p-5 rounded-3xl shadow-md flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-white/20 p-3 rounded-2xl"><i class="fa-brands fa-whatsapp text-2xl"></i></div>
+                        <div>
+                            <h4 class="font-extrabold text-base">Share Itinerary & Cost via WhatsApp</h4>
+                            <p class="text-xs text-emerald-100">Send complete days/nights breakdown, hotel stay estimate, and transport details.</p>
+                        </div>
+                    </div>
+                    <button onclick="shareViaWhatsApp()" class="bg-white text-emerald-700 font-bold px-5 py-3 rounded-xl text-sm shadow-sm hover:bg-emerald-50 transition whitespace-nowrap">
+                        <i class="fa-solid fa-share-nodes mr-1"></i> Send to WhatsApp
+                    </button>
+                </div>
+
+                <!-- EMERGENCY HELPLINES HUB -->
+                <div class="bg-rose-50 border border-rose-100 rounded-3xl p-6 shadow-sm space-y-4">
+                    <div class="flex justify-between items-center border-b border-rose-200 pb-3">
+                        <div class="flex items-center gap-3">
+                            <div class="bg-rose-600 text-white p-2.5 rounded-2xl"><i class="fa-solid fa-triangle-exclamation text-lg"></i></div>
+                            <div>
+                                <h3 class="text-lg font-extrabold text-rose-900">Emergency & Safety Helpline Hub (<span id="helplineLocationLabel">Destination</span>)</h3>
+                                <p class="text-xs text-rose-700">Instant numbers to call if you face any problem or emergency during your trip.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                        <div class="bg-white p-4 rounded-2xl border border-rose-100 shadow-sm space-y-1">
+                            <span class="text-xs font-bold text-rose-500 uppercase">Police Helpline</span>
+                            <p class="text-xl font-black text-slate-900" id="policeNumber">100 / 112</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-rose-100 shadow-sm space-y-1">
+                            <span class="text-xs font-bold text-rose-500 uppercase">Ambulance / Medical</span>
+                            <p class="text-xl font-black text-slate-900" id="ambulanceNumber">102 / 108</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-rose-100 shadow-sm space-y-1">
+                            <span class="text-xs font-bold text-rose-500 uppercase">Tourist Helpline</span>
+                            <p class="text-xl font-black text-slate-900">1800-11-1363</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-rose-100 shadow-sm space-y-1">
+                            <span class="text-xs font-bold text-rose-500 uppercase">Women Helpline</span>
+                            <p class="text-xl font-black text-slate-900">1091 / 112</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Budget Breakdown & Divider Section -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 border border-slate-100 shadow-sm space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-900"><i class="fa-solid fa-pie-chart text-[#0D7377] mr-2"></i> Smart Budget Divider & Cost Allocator</h3>
+                            <p class="text-xs text-slate-500 mt-0.5">Calculated based on duration, traveler count, flight/train fares, and lodging rates.</p>
+                        </div>
+                        <span id="totalTripEstimateBadge" class="bg-emerald-50 text-emerald-700 font-extrabold text-sm px-4 py-2 rounded-xl">Total Est: ₹0</span>
+                    </div>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Hotels / Airbnb (40%)</span>
+                            <p id="budgetStay" class="text-lg font-extrabold text-slate-900">₹0</p>
+                            <p id="budgetStayNights" class="text-[11px] text-slate-500">For 2 Nights Stay</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Transport (30%)</span>
+                            <p id="budgetTransport" class="text-lg font-extrabold text-slate-900">₹0</p>
+                            <p class="text-[11px] text-slate-500">Flights / Train tickets</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Food & Dining (20%)</span>
+                            <p id="budgetFood" class="text-lg font-extrabold text-slate-900">₹0</p>
+                            <p class="text-[11px] text-slate-500">Cafés & local specialties</p>
+                        </div>
+                        <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 space-y-1">
+                            <span class="text-xs font-bold text-slate-400 uppercase">Activities (10%)</span>
+                            <p id="budgetActivities" class="text-lg font-extrabold text-slate-900">₹0</p>
+                            <p class="text-[11px] text-slate-500">Tickets & souvenirs</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Destination Details Card -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm flex flex-col md:flex-row gap-6 items-center">
+                    <img id="locImage" src="" class="w-full md:w-72 h-48 object-cover rounded-2xl bg-slate-100">
+                    <div class="space-y-2 flex-grow">
+                        <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-location-dot mr-1"></i> Destination Details</span>
+                        <h2 id="locTitle" class="text-2xl font-extrabold text-slate-900"></h2>
+                        <p id="locDesc" class="text-slate-600 text-sm leading-relaxed"></p>
+                    </div>
+                </div>
+
+                <!-- POPULAR ATTRACTIONS (WIKIPEDIA DATA & CUSTOM ITINERARY) -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-900"><i class="fa-solid fa-landmark text-[#0D7377] mr-2"></i> Popular Places to Visit & Custom Day-by-Day Itinerary</h3>
+                            <p class="text-xs text-slate-500">Wikipedia top tourist spots combined with customized day schedule.</p>
+                        </div>
+                    </div>
+
+                    <!-- Places Grid -->
+                    <div id="popularPlacesGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+
+                    <!-- Custom Day-by-Day Itinerary Breakdown -->
+                    <div class="bg-slate-50 rounded-2xl p-5 border border-slate-100 space-y-4">
+                        <h4 class="font-extrabold text-slate-900 text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-calendar-check text-[#0D7377]"></i> Tailored <span id="itineraryDurationLabel">3-Day</span> Experience Schedule
+                        </h4>
+                        <div id="dayByDayContainer" class="grid grid-cols-1 md:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+
+                <!-- FOOD & CUISINE GALLERY -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-4">
+                    <div class="border-b border-slate-100 pb-3">
+                        <h3 class="text-xl font-extrabold text-slate-900"><i class="fa-solid fa-bowl-food text-rose-500 mr-2"></i> Local Food, Cafés & Cultural Clothing</h3>
+                        <p class="text-xs text-slate-500">Popular dishes and recommended travel clothing for your destination.</p>
+                    </div>
+
+                    <div id="foodGalleryGrid" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+                </div>
+
+                <!-- HOTELS, ROOMS & AIRBNB PORTALS -->
+                <div class="bg-white rounded-3xl p-6 border border-slate-100 shadow-sm space-y-6">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                        <div>
+                            <h3 class="text-xl font-extrabold text-slate-900"><i class="fa-solid fa-hotel text-emerald-600 mr-2"></i> Stays, Rooms, Airbnb & Google Maps Finder</h3>
+                            <p class="text-xs text-slate-500">Explore real accommodation listings directly on Airbnb and Google Maps.</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-slate-900 text-sm"><i class="fa-solid fa-map-location-dot text-rose-500 mr-2"></i> Google Maps Hotels</p>
+                                <p class="text-xs text-slate-500">View real location ratings and nearby rooms</p>
+                            </div>
+                            <a id="gmapsLink" href="#" target="_blank" class="bg-[#0D7377] text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-[#09575A] transition shadow-sm">
+                                Open Maps <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                            </a>
+                        </div>
+
+                        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex justify-between items-center">
+                            <div>
+                                <p class="font-bold text-slate-900 text-sm"><i class="fa-brands fa-airbnb text-rose-500 mr-2"></i> Airbnb Homes & Villas</p>
+                                <p class="text-xs text-slate-500">Find private apartments and homestays</p>
+                            </div>
+                            <a id="airbnbLink" href="#" target="_blank" class="bg-rose-500 text-white text-xs font-bold px-4 py-2.5 rounded-xl hover:bg-rose-600 transition shadow-sm">
+                                Search Airbnb <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div id="hotelsList" class="space-y-3"></div>
+                </div>
+
+                <!-- FLIGHTS & TRAIN PORTALS -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-plane-departure text-[#0D7377]"></i> Flight Portals (IndiGo & Air India)
+                            </h3>
+                            <span class="bg-blue-50 text-blue-700 text-xs px-2.5 py-1 rounded-full font-bold">Direct Links</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                <div>
+                                    <p class="font-bold text-slate-900">IndiGo Airlines</p>
+                                    <p class="text-xs text-slate-500">Fast & affordable flight reservations</p>
+                                </div>
+                                <a href="https://www.goindigo.in/flights" target="_blank" class="bg-[#0D7377] hover:bg-[#09575A] text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm">
+                                    Book IndiGo <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                                </a>
+                            </div>
+                            <div class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                <div>
+                                    <p class="font-bold text-slate-900">Air India</p>
+                                    <p class="text-xs text-slate-500">Full-service national & global airline</p>
+                                </div>
+                                <a href="https://www.airindia.com/en-in/book-flights/" target="_blank" class="bg-[#0D7377] hover:bg-[#09575A] text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm">
+                                    Book Air India <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="trainPortalCard" class="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                            <h3 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+                                <i class="fa-solid fa-train text-amber-600"></i> Train Portal (IRCTC)
+                            </h3>
+                            <span class="bg-amber-50 text-amber-700 text-xs px-2.5 py-1 rounded-full font-bold">Domestic Trains</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                                <div>
+                                    <p class="font-bold text-slate-900">IRCTC Rail Connect</p>
+                                    <p id="trainCostDetail" class="text-xs font-bold text-amber-600 mt-0.5">Train Fare Est: calculating...</p>
+                                </div>
+                                <a href="https://www.irctc.co.in/" target="_blank" class="bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-sm">
+                                    Book on IRCTC <i class="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+                                </a>
+                            </div>
+                            <div class="p-3 bg-emerald-50 text-emerald-800 rounded-xl text-xs font-medium">
+                                <i class="fa-solid fa-circle-check mr-1"></i> Enabled for state-to-state and district journeys within the country.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- MEMORY WALL SECTION -->
+        <section id="memories-section" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 rounded-3xl border border-slate-100 shadow-sm gap-4">
+                <div>
+                    <h2 class="text-2xl font-extrabold text-slate-900">Trip Memory Wall</h2>
+                    <p class="text-slate-500 text-sm">Save your photos, stories, and notes from trips across all states and countries.</p>
+                </div>
+                <button onclick="openMemoryModal()" class="bg-[#0D7377] hover:bg-[#09575A] text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> Add Memory
+                </button>
+            </div>
+            <div id="memoriesGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"></div>
+        </section>
+
+    </main>
+
+    <!-- Add Memory Modal -->
+    <div id="memoryModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden justify-center items-center z-50 p-4">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-5 shadow-2xl border border-slate-100">
+            <div class="flex justify-between items-center border-b border-slate-100 pb-4">
+                <h3 class="text-xl font-extrabold text-slate-900">Share Your Trip Memory</h3>
+                <button onclick="closeMemoryModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Destination / Place Name</label>
+                    <input type="text" id="memLocation" placeholder="e.g. Goa, Tokyo, Paris" class="w-full bg-slate-50 text-slate-900 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0D7377] font-medium text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Photo Image URL</label>
+                    <input type="text" id="memImage" placeholder="Paste image link" class="w-full bg-slate-50 text-slate-900 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0D7377] font-medium text-sm">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-600 uppercase mb-1.5">Your Story / Experience</label>
+                    <textarea id="memDesc" rows="3" placeholder="Write about your experience..." class="w-full bg-slate-50 text-slate-900 px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:border-[#0D7377] font-medium text-sm"></textarea>
+                </div>
+            </div>
+            <div class="flex justify-end space-x-3 pt-2">
+                <button onclick="closeMemoryModal()" class="px-5 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-bold text-sm">Cancel</button>
+                <button onclick="saveMemory()" class="px-5 py-2.5 bg-[#0D7377] text-white rounded-xl font-bold text-sm shadow-sm hover:bg-[#09575A]">Post Memory</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        let currentTripData = {};
+
+        function getDistanceKm(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon/2) * Math.sin(dLon/2);
+            return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
+        }
+
+        async function getPlaceDetails(placeName) {
+            try {
+                const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&addressdetails=1&q=${encodeURIComponent(placeName)}`);
+                const data = await res.json();
+                if(data && data.length > 0) {
+                    const country = data[0].address ? (data[0].address.country || '') : '';
+                    return { lat: parseFloat(data[0].lat), lon: parseFloat(data[0].lon), country: country.toLowerCase() };
+                }
+            } catch(e) { console.error(e); }
+            return null;
+        }
+
+        async function handleSearch() {
+            const origin = document.getElementById('originInput').value.trim();
+            const dest = document.getElementById('destInput').value.trim();
+            const days = parseInt(document.getElementById('durationDays').value) || 3;
+            const nights = days - 1;
+            const travelers = parseInt(document.getElementById('travelersCount').value) || 1;
+            const customBudget = parseFloat(document.getElementById('customBudgetInput').value) || 0;
+            const costFilter = document.getElementById('costFilter').value;
+
+            if(!origin || !dest) return alert('Please enter both starting location and destination!');
+
+            const origInfo = await getPlaceDetails(origin);
+            const destInfo = await getPlaceDetails(dest);
+
+            let distanceKm = 800;
+            let isInternational = false;
+
+            if(origInfo && destInfo) {
+                distanceKm = getDistanceKm(origInfo.lat, origInfo.lon, destInfo.lat, destInfo.lon);
+                if(origInfo.country && destInfo.country && origInfo.country !== destInfo.country) {
+                    isInternational = true;
+                }
+            }
+
+            const flightCostPerPerson = Math.max(2800, Math.round(distanceKm * 4.2));
+            const trainCostPerPerson = Math.max(500, Math.round(distanceKm * 1.4));
+
+            const totalFlightCost = flightCostPerPerson * travelers;
+            const totalTrainCost = trainCostPerPerson * travelers;
+
+            document.getElementById('helplineLocationLabel').innerText = dest;
+            if(isInternational) {
+                document.getElementById('policeNumber').innerText = "911 / Local";
+                document.getElementById('ambulanceNumber').innerText = "911 / Local";
+            } else {
+                document.getElementById('policeNumber').innerText = "100 / 112";
+                document.getElementById('ambulanceNumber').innerText = "102 / 108";
+            }
+
+            document.getElementById('gmapsLink').href = `https://www.google.com/maps/search/hotels+in+${encodeURIComponent(dest)}`;
+            document.getElementById('airbnbLink').href = `https://www.airbnb.com/s/${encodeURIComponent(dest)}/homes`;
+
+            document.getElementById('statDuration').innerText = `${days} Days / ${nights} Night${nights>1?'s':''}`;
+            document.getElementById('statDistance').innerText = `${distanceKm.toLocaleString()} km (${travelers} traveler${travelers>1?'s':''})`;
+            document.getElementById('statFlightCost').innerText = `₹${totalFlightCost.toLocaleString()}`;
+            
+            const trainCard = document.getElementById('trainPortalCard');
+            if(isInternational || distanceKm > 3500) {
+                document.getElementById('statTrainCost').innerText = "N/A (Intl)";
+                trainCard.style.opacity = "0.5";
+                trainCard.querySelector('.text-amber-600').innerText = "Trains Unavailable (International Route)";
+            } else {
+                document.getElementById('statTrainCost').innerText = `₹${totalTrainCost.toLocaleString()}`;
+                trainCard.style.opacity = "1";
+                document.getElementById('trainCostDetail').innerText = `Train Fare Est: ~₹${totalTrainCost.toLocaleString()} for ${travelers} traveler(s)`;
+            }
+
+            const estimatedHotelTotal = 2500 * nights * travelers;
+            const totalEstimatedTripCost = totalFlightCost + estimatedHotelTotal + (1200 * days * travelers);
+
+            currentTripData = { origin, dest, days, nights, travelers, distanceKm, totalFlightCost, totalTripEstimate: totalEstimatedTripCost };
+
+            document.getElementById('totalTripEstimateBadge').innerText = `Est. Total: ₹${totalEstimatedTripCost.toLocaleString()}`;
+            document.getElementById('budgetStay').innerText = `₹${Math.round(totalEstimatedTripCost * 0.4).toLocaleString()}`;
+            document.getElementById('budgetStayNights').innerText = `For ${nights} Night${nights>1?'s':''} Stay`;
+            document.getElementById('budgetTransport').innerText = `₹${Math.round(totalEstimatedTripCost * 0.3).toLocaleString()}`;
+            document.getElementById('budgetFood').innerText = `₹${Math.round(totalEstimatedTripCost * 0.2).toLocaleString()}`;
+            document.getElementById('budgetActivities').innerText = `₹${Math.round(totalEstimatedTripCost * 0.1).toLocaleString()}`;
+
+            if(customBudget > 0) {
+                const diff = customBudget - totalEstimatedTripCost;
+                const badge = document.getElementById('statBudgetCheck');
+                if(diff >= 0) {
+                    badge.innerHTML = `<span class="text-emerald-600 font-bold">Within Budget ✅ (+₹${diff.toLocaleString()})</span>`;
+                } else {
+                    badge.innerHTML = `<span class="text-rose-600 font-bold">Over Budget ⚠️ (-₹${Math.abs(diff).toLocaleString()})</span>`;
+                }
+            } else {
+                document.getElementById('statBudgetCheck').innerText = `Not Specified`;
+            }
+
+            document.getElementById('resultsContainer').classList.remove('hidden');
+            window.scrollTo({ top: 520, behavior: 'smooth' });
+
+            try {
+                const wikiRes = await fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${encodeURIComponent(dest)}`);
+                const wikiData = await wikiRes.json();
+                document.getElementById('locTitle').innerText = wikiData.title || dest;
+                document.getElementById('locDesc').innerText = wikiData.extract || 'Explore top local attractions, regional foods, and comfortable stays.';
+                document.getElementById('locImage').src = (wikiData.thumbnail && wikiData.thumbnail.source) ? wikiData.thumbnail.source : 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&w=600&q=80';
+            } catch(e) {
+                document.getElementById('locTitle').innerText = dest;
+                document.getElementById('locDesc').innerText = `Explore tourist spots and travel options across ${dest}.`;
+            }
+
+            renderPopularPlaces(dest);
+            renderDayByDayItinerary(dest, days);
+            renderFoodGallery(dest);
+            renderHotels(costFilter, travelers, nights);
+        }
+
+        function renderPopularPlaces(dest) {
+            const container = document.getElementById('popularPlacesGrid');
+            const places = [
+                { name: `${dest} Central Plaza & Old Town`, desc: "Historic city square surrounded by iconic landmarks and cafes.", img: "https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&w=600&q=80" },
+                { name: `${dest} Scenic Lookout Point`, desc: "Panoramic high viewpoint overlooking mountains and skyline.", img: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" },
+                { name: `Cultural Heritage Museum of ${dest}`, desc: "Famous collection of historical artifacts, art, and architecture.", img: "https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=600&q=80" }
+            ];
+
+            container.innerHTML = places.map(p => `
+                <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 flex flex-col">
+                    <img src="${p.img}" class="h-36 w-full object-cover">
+                    <div class="p-4 space-y-1">
+                        <p class="font-bold text-slate-900 text-sm">${p.name}</p>
+                        <p class="text-xs text-slate-500">${p.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderDayByDayItinerary(dest, days) {
+            document.getElementById('itineraryDurationLabel').innerText = `${days}-Day`;
+            const container = document.getElementById('dayByDayContainer');
+            let html = '';
+
+            for(let i = 1; i <= days; i++) {
+                if(i === 1) {
+                    html += `
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 space-y-1">
+                            <span class="bg-[#0D7377] text-white text-[10px] font-extrabold px-2 py-0.5 rounded">DAY 1</span>
+                            <p class="font-bold text-slate-800 text-xs mt-1">Arrival & Local Exploration</p>
+                            <p class="text-[11px] text-slate-500">Check-in at stay, evening stroll at ${dest} Central Market, and try street food.</p>
+                        </div>
+                    `;
+                } else if(i === days) {
+                    html += `
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 space-y-1">
+                            <span class="bg-[#0D7377] text-white text-[10px] font-extrabold px-2 py-0.5 rounded">DAY ${i}</span>
+                            <p class="font-bold text-slate-800 text-xs mt-1">Souvenirs & Departure</p>
+                            <p class="text-[11px] text-slate-500">Morning breakfast café, souvenir shopping, and return journey home.</p>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="bg-white p-4 rounded-xl border border-slate-100 space-y-1">
+                            <span class="bg-[#0D7377] text-white text-[10px] font-extrabold px-2 py-0.5 rounded">DAY ${i}</span>
+                            <p class="font-bold text-slate-800 text-xs mt-1">Full Day Sightseeing</p>
+                            <p class="text-[11px] text-slate-500">Visit famous heritage sites, viewpoint lookouts, and fine dining restaurants in ${dest}.</p>
+                        </div>
+                    `;
+                }
+            }
+            container.innerHTML = html;
+        }
+
+        function renderFoodGallery(dest) {
+            const container = document.getElementById('foodGalleryGrid');
+            const items = [
+                { title: `Authentic ${dest} Special Curry / Platter`, type: "Local Cuisine", img: "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" },
+                { title: "Artisanal Coffee & Street Desserts", type: "Café & Bakery", img: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=600&q=80" },
+                { title: "Traditional Seasonal Wear", type: "Recommended Clothing", img: "https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?auto=format&fit=crop&w=600&q=80" }
+            ];
+
+            container.innerHTML = items.map(f => `
+                <div class="bg-slate-50 rounded-2xl overflow-hidden border border-slate-100 flex flex-col">
+                    <img src="${f.img}" class="h-36 w-full object-cover">
+                    <div class="p-4 space-y-1">
+                        <span class="text-[10px] font-bold text-rose-600 uppercase">${f.type}</span>
+                        <p class="font-bold text-slate-900 text-sm">${f.title}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderHotels(filter, travelers, nights) {
+            const hotels = [
+                { name: "Backpacker Cozy Stay Hostel", basePrice: 950, type: "budget", rating: "4.3 ★" },
+                { name: "Grand Meridian Hotel & Suites", basePrice: 3400, type: "mid", rating: "4.6 ★" },
+                { name: "The Royal Crown Luxury Resort", basePrice: 8900, type: "luxury", rating: "4.9 ★" }
+            ];
+            const filtered = hotels.filter(h => filter === 'all' || h.type === filter);
+            document.getElementById('hotelsList').innerHTML = filtered.map(h => {
+                const totalStayPrice = h.basePrice * travelers * nights;
+                return `
+                    <div class="flex justify-between items-center p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div>
+                            <p class="font-bold text-slate-900 text-sm">${h.name}</p>
+                            <p class="text-xs text-slate-500">Rating: ${h.rating} | For ${travelers} traveler(s) • ${nights} Night(s)</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="font-bold text-[#0D7377] text-sm">₹${totalStayPrice.toLocaleString()} total</p>
+                            <a href="https://www.booking.com" target="_blank" class="bg-[#0D7377] hover:bg-[#09575A] text-white text-xs font-bold px-3.5 py-1.5 rounded-xl mt-1 inline-block">Book Stay</a>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function shareViaWhatsApp() {
+            if(!currentTripData.dest) return alert('Please calculate a trip first before sharing!');
+            const text = `🌍 *TravelMate Trip Itinerary* 🌍%0A*From:* ${currentTripData.origin}%0A*To:* ${currentTripData.dest}%0A*Duration:* ${currentTripData.days} Days / ${currentTripData.nights} Nights%0A*Travelers:* ${currentTripData.travelers}%0A*Distance:* ${currentTripData.distanceKm} km%0A*Estimated Total Cost:* ₹${currentTripData.totalTripEstimate?.toLocaleString()}%0A%0AEmergency Police/Ambulance Helpline: 112 / 100%0ABooked via TravelMate 🚀`;
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        function showSection(sec) {
+            document.getElementById('home-section').classList.add('hidden');
+            document.getElementById('memories-section').classList.add('hidden');
+            if(sec === 'home') document.getElementById('home-section').classList.remove('hidden');
+            if(sec === 'memories') {
+                document.getElementById('memories-section').classList.remove('hidden');
+                loadMemories();
+            }
+        }
+
+        function openMemoryModal() { document.getElementById('memoryModal').classList.remove('hidden'); document.getElementById('memoryModal').classList.add('flex'); }
+        function closeMemoryModal() { document.getElementById('memoryModal').classList.add('hidden'); document.getElementById('memoryModal').classList.remove('flex'); }
+
+        function saveMemory() {
+            const loc = document.getElementById('memLocation').value.trim();
+            const img = document.getElementById('memImage').value.trim() || 'https://images.unsplash.com/photo-1503220317375-aaad61436b1b?auto=format&fit=crop&w=600&q=80';
+            const desc = document.getElementById('memDesc').value.trim();
+
+            if(!loc || !desc) return alert('Please enter destination and your story!');
+            const memories = JSON.parse(localStorage.getItem('travel_memories') || '[]');
+            memories.unshift({ location: loc, image: img, desc, date: new Date().toLocaleDateString() });
+            localStorage.setItem('travel_memories', JSON.stringify(memories));
+            
+            closeMemoryModal();
+            loadMemories();
+        }
+
+        function loadMemories() {
+            const container = document.getElementById('memoriesGrid');
+            const memories = JSON.parse(localStorage.getItem('travel_memories') || '[]');
+            if(memories.length === 0) {
+                container.innerHTML = `<div class="col-span-full text-center py-12 bg-white rounded-3xl border border-slate-100 text-slate-400">No trip memories saved yet. Click "Add Memory" to post your first photo!</div>`;
+                return;
+            }
+            container.innerHTML = memories.map(m => `
+                <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden flex flex-col">
+                    <img src="${m.image}" class="h-48 w-full object-cover">
+                    <div class="p-5 flex flex-col flex-grow space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-3 py-1 rounded-full"><i class="fa-solid fa-location-dot mr-1"></i>${m.location}</span>
+                            <span class="text-xs text-slate-400">${m.date}</span>
+                        </div>
+                        <p class="text-slate-600 text-sm leading-relaxed">${m.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+</html>
